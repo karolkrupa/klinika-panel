@@ -1,0 +1,86 @@
+{% extends '@EasyAdmin/crud/detail.html.twig' %}
+
+
+{% block detail_fields %}
+    {% if field_layout.hasTabs %}
+        {{ _self.render_detail_fields_with_tabs(entity, field_layout) }}
+    {% else %}
+        {{ _self.render_detail_fields(entity, field_layout.fields) }}
+    {% endif %}
+
+
+    <div class="field-form_panel">
+        <div class="form-panel">
+            <div class="form-panel-header  ">
+                <div class="form-panel-title">
+                   <div class="row justify-content-between">
+
+                       <a href="#">Wizyty</a>
+
+                   </div>
+                </div>
+            </div>
+
+            <div>
+                {% set url = ea_url()
+                    .setController('App\\Controller\\Admin\\VisitCrudController')
+                    .setAction('new') %}
+
+                <a href="{{ url }}" class="btn btn-primary">Zaplanuj wizytę</a>
+            </div>
+
+            <div class="form-panel-body  show">
+                <dl class="datalist">
+
+                    {% for visit in entity.instance.visits %}
+                        <div class="row">
+                            <div class="col-12">
+                                <h6>Wizyta z dnia <b>{{ visit.date|date('Y-m-d H:i') }}</b></h6>
+                            </div>
+                        </div>
+
+                        <div class="data-row ">
+                            <dt>
+                                Lekarz
+                            </dt>
+                            <dd>
+                                {{ visit.doctor }}
+                            </dd>
+                        </div>
+
+                        <div class="data-row ">
+                            <dt>
+                                Status
+                            </dt>
+                            <dd>
+                                <div class="badge">Odbyta</div>
+                            </dd>
+                        </div>
+
+                        <div class="data-row ">
+                            <dt>
+                                Cel wizyty
+                            </dt>
+                            <dd>
+                                {{ visit.purposeDescription|default('Brak') }}
+                            </dd>
+                        </div>
+
+                        <div class="data-row ">
+                            <dt>
+                                Opis wizyty
+                            </dt>
+                            <dd>
+                                {{ visit.description|default('Brak') }}
+                            </dd>
+                        </div>
+                    {% endfor %}
+
+
+
+
+                </dl>
+            </div>
+        </div>
+    </div>
+{% endblock detail_fields %}
